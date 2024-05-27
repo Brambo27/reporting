@@ -1,0 +1,29 @@
+version: "2"
+name: 'platform'
+services:
+  platform-reporting:
+    container_name: "platform.reporting.${APP_ENV}"
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5030:5030"
+      - "5930:5930"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    networks:
+      - "platform-network-${APP_ENV}"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+
+# Docker Networks
+networks:
+  platform-network-local:
+    driver: bridge
+  platform-network-staging:
+    driver: bridge
+  platform-network-development:
+    driver: bridge
